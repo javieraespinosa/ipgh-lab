@@ -12,7 +12,7 @@ Docker environement and python tools for graphically exploring weather related d
 
 ## Contributors
 
-* [LACLICHEV][1]: **Santiago Ruiz**, Autonomous University of Guadalajara (master student).
+* **Santiago Ruiz**, Autonomous University of Guadalajara (master student), [LACLICHEV][1] tools.
 
 
 [1]: https://github.com/zantiiago0/LACLICHEV
