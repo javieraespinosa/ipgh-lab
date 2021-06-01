@@ -84,7 +84,8 @@ RUN curl -s "https://archive.apache.org/dist/lucene/pylucene/pylucene-${PYLUCENE
 COPY requirements.txt  /requirements.txt
 RUN pip install -r /requirements.txt \
  && jupyter nbextension enable --py --sys-prefix widgetsnbextension \
- && jupyter nbextension enable --py --sys-prefix gmaps 
+ && jupyter nbextension enable --py --sys-prefix gmaps \
+ && /requirements.txt
 
 # local modules
 COPY py  /py
@@ -95,7 +96,11 @@ ENV PYTHONPATH=/py:$PYTHONPATH
 # Final Config
 #-----------------------------------------------------
 
-# nltk files
 COPY nltk_data  /usr/local/share/nltk_data
+COPY notebooks  /notebooks
+
+# Jupyter 
+RUN echo 'c.NotebookApp.notebook_dir = "/notebooks"' >> /home/jovyan/.jupyter/jupyter_notebook_config.py \
+ && echo 'c.NotebookApp.base_url     = "/"'          >> /home/jovyan/.jupyter/jupyter_notebook_config.py
 
 USER $NB_USER
