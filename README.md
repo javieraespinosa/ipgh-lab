@@ -9,7 +9,7 @@
 
 Docker environement and python tools for graphically exploring weather related data from digital newspapers. 
 
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/javieraespinosa/ipgh-lab/master/docker-compose.yml)
+[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/javieraespinosa/ipgh-lab/master/stack.yml)
 
 ## Contributors
 
