@@ -3,8 +3,7 @@ version: '3'
 services:
 
   mongo:
-    image:    mongo:latest
-    command:  mongod 
+    image:    mongo:3.6
     ports:
       - 27017:27017
  
@@ -16,10 +15,4 @@ services:
       - 8888:8888
     volumes:
       - ./notebook:/home/jovyan
-      - ./nltk_data:/usr/local/share/nltk_data
-      - ./py/dataDB:/opt/conda/lib/python3.6/site-packages/dataDB
-      - ./py/dataEnhancer:/opt/conda/lib/python3.6/site-packages/dataEnhancer
-      - ./py/dataExtractors:/opt/conda/lib/python3.6/site-packages/dataExtractors
-      - ./py/dataIndexer:/opt/conda/lib/python3.6/site-packages/dataIndexer
-      - ./py/tools:/opt/conda/lib/python3.6/site-packages/tools
 

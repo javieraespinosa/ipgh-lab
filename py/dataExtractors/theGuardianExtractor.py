@@ -1,6 +1,6 @@
 """
 The Guardian data extractor module
-API: b90595fd-be2a-4488-88bd-538a28af1be2
+API: f59b6a77-edb9-4c2c-85b2-0398bd088976
 """
 ###################################################################################################
 #IMPORTS
@@ -34,7 +34,7 @@ class TheGuardianExtractor:
                    Supports AND(&), OR(|) and NOT(!) operators, and exact phrase queries.
         """
         self.__contentTAG = 'content__article-body from-content-api js-article__body'
-        self.__API        = 'b90595fd-be2a-4488-88bd-538a28af1be2'
+        self.__API        = 'f59b6a77-edb9-4c2c-85b2-0398bd088976'
         self.__keywords   = []
         self.__query      = ''
 

@@ -1,10 +1,11 @@
 
-FROM jupyter/base-notebook
+FROM jupyter/base-notebook:notebook-6.3.0
+
+USER root
 
 #-----------------------------------------------------
 # Dev Tools
 #-----------------------------------------------------
-USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ant \
@@ -18,44 +19,83 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 #-----------------------------------------------------
-# PyLucene (with conda openjdk 8.0)
+# Python 
 #-----------------------------------------------------
-ENV JCC_JDK=/opt/conda/pkgs/openjdk-8.0.121-1
+# Downgrading to python 3.6
+#   https://jupyter-docker-stacks.readthedocs.io/en/latest/using/recipes.html
 
-RUN conda install --yes --quiet \
-    'jcc' \
-    'openjdk==8.0.121' \
- && curl http://apache.rediris.es/lucene/pylucene/pylucene-6.5.0-src.tar.gz | tar xz  \
- && cd pylucene-6.5.0 \
- && make all install JCC='python -m jcc' ANT=ant PYTHON=python NUM_FILES=8  \
- && cd .. && rm -r pylucene-6.5.0 
- 
+ENV PYTHON_VERSION="3.6"
+ENV CONDA_ENV="Python${PYTHON_VERSION}"
+
+# Create Python 3.x environment and link it to jupyter
+RUN conda create --quiet --yes -p $CONDA_DIR/envs/$CONDA_ENV python=$PYTHON_VERSION ipython ipykernel \
+ && conda clean --all -f -y
+
+RUN $CONDA_DIR/envs/${CONDA_ENV}/bin/python -m ipykernel install --user --name=${CONDA_ENV} \
+ && fix-permissions $CONDA_DIR \
+ && fix-permissions /home/$NB_USER
+
+# Set as default python version
+ENV PATH="$CONDA_DIR/envs/${CONDA_ENV}/bin:$PATH"
+ENV CONDA_DEFAULT_ENV="${CONDA_ENV}"
+
+
+#-----------------------------------------------------
+# OpenJDK
+#-----------------------------------------------------
+
+ENV OPENJDK_VERSION="8"
+ENV JAVA_HOME="/usr/lib/jvm/java-${OPENJDK_VERSION}-openjdk-amd64"
+
+RUN apt-get -y update && apt-get install --no-install-recommends -y \
+    "openjdk-${OPENJDK_VERSION}-jdk-headless" \
+    ca-certificates-java \
+ && apt-get clean  \
+ && rm -rf /var/lib/apt/lists/*
+
+
+#-----------------------------------------------------
+# PyLucene 
+#-----------------------------------------------------
+
+ENV PYLUCENE_VERSION="7.7.1"
+ENV JCC_JDK=$JAVA_HOME
+
+RUN curl -s "https://archive.apache.org/dist/lucene/pylucene/pylucene-${PYLUCENE_VERSION}-src.tar.gz" | tar xz  \
+ && cd pylucene-${PYLUCENE_VERSION} \
+ && sed -i 's+http://repo1.maven.org+https://repo1.maven.org+g' lucene-java-${PYLUCENE_VERSION}/lucene/common-build.xml  \
+ && sed -i 's+http://uk.maven.org+https://uk.maven.org+g' lucene-java-${PYLUCENE_VERSION}/lucene/common-build.xml  \
+# Compile JCC
+    && cd jcc \ 
+    && python setup.py -q build \
+    && python setup.py -q install \ 
+    && cd .. \
+# Compile Pylucene    
+ && make all install JCC='python -m jcc' ANT=ant PYTHON=python NUM_FILES=10  \
+ && cd .. \
+ && rm -r pylucene-${PYLUCENE_VERSION}
+
 
 #-----------------------------------------------------
 # Python dependencies
 #-----------------------------------------------------
-RUN conda install --yes --quiet \
-    'ipywidgets' \
-    'gmaps' \
-    'plotly' \
-    'pandas' \
-    'beautifulsoup4==4.6.0' \
-    'certifi==2017.4.17' \
-    'chardet==3.0.4' \
-    'geopy==1.11.0' \
-    'idna==2.5' \
-    'lxml==3.8.0' \
-    'nltk==3.2.4' \
-    'numpy==1.13.1' \
-    'pymongo==3.4.0' \
-    'requests==2.18.1' \
-    'six==1.10.0' \
-    'urllib3==1.21.1' \
- && conda clean -tipsy \
+
+# external modules
+COPY requirements.txt  /requirements.txt
+RUN pip install -r /requirements.txt \
  && jupyter nbextension enable --py --sys-prefix widgetsnbextension \
  && jupyter nbextension enable --py --sys-prefix gmaps 
 
+# local modules
+COPY py  /py
+RUN fix-permissions  /py
+ENV PYTHONPATH=/py:$PYTHONPATH
+
+#-----------------------------------------------------
+# Final Config
+#-----------------------------------------------------
+
+# nltk files
+COPY nltk_data  /usr/local/share/nltk_data
+
 USER $NB_USER
-
-
-

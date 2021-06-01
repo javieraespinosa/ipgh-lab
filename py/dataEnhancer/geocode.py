@@ -32,7 +32,7 @@ class Geocode:
         self.__geolocator   = Nominatim()
         self.__geolocator.structured_query_params.add('countrycodes')
         # Load Country Codes
-        jsonPath            = "/opt/conda/lib/python3.6/site-packages/tools/countryCodes.json"
+        jsonPath            = "/py/tools/countryCodes.json"
         self.__countryCodes = json.loads(open(jsonPath).read())
 
     ##################################################
