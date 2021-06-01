@@ -10,7 +10,7 @@ services:
   jupyter:
     build:    .
     image:    jaeo/ipgh-lab
-    command:  start-notebook.sh --NotebookApp.token='' NotebookApp.notebook_dir='/notebooks' NotebookApp.base_url='/'
+    command:  start-notebook.sh --NotebookApp.token='' --NotebookApp.notebook_dir='/notebooks'
     ports:
       - 8888:8888
     volumes:
