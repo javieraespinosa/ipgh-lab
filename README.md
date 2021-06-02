@@ -17,6 +17,7 @@ Copy/paste the following instructions in [play-with-docker](https://labs.play-wi
 ```sh
 git clone https://github.com/javieraespinosa/ipgh-lab.git
 cd ipgh-lab
+docker-compose pull
 docker-compose up -d
 ```
 
