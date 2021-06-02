@@ -2,11 +2,6 @@ version: '3'
 
 services:
 
-  mongo:
-    image:    mongo:3.6
-    ports:
-      - 27017:27017
- 
   jupyter:
     build:    .
     image:    jaeo/ipgh-lab
@@ -16,3 +11,8 @@ services:
     volumes:
       - ./notebooks:/notebooks
 
+  mongo:
+    image:    mongo:3.6
+    ports:
+      - 27017:27017
+ 
