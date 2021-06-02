@@ -9,7 +9,20 @@
 
 Docker environement and python tools for graphically exploring weather related data from digital newspapers. 
 
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/javieraespinosa/ipgh-lab/master/stack.yml)
+
+## Try it!  
+
+Copy/paste the following instructions in [play-with-docker](https://labs.play-with-docker.com) (or your local environment if you prefer):
+
+```sh
+git clone https://github.com/javieraespinosa/ipgh-lab.git
+cd ipgh-lab
+docker-compose up -d
+```
+
+Look for the `8888` button in the play-with-docker user interface. If running locally, visit [localhost:8888](http://localhost:8888).
+
+
 
 ## Contributors
 
