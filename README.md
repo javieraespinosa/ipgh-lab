@@ -12,7 +12,6 @@ Docker environement and python tools for graphically exploring weather related d
 
 ## Try it!  
 
-Copy/paste the following instructions in [play-with-docker](https://labs.play-with-docker.com) (or your local environment if you prefer):
 
 ```sh
 git clone https://github.com/javieraespinosa/ipgh-lab.git
@@ -21,7 +20,7 @@ docker-compose pull
 docker-compose up -d
 ```
 
-Look for the `8888` button in the play-with-docker user interface. If running locally, visit [localhost:8888](http://localhost:8888).
+Visit [localhost:8888](http://localhost:8888).
 
 
 
